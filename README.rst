@@ -3,18 +3,16 @@ Eugene Downtown Neighborhood Association Minutes
 
 To take minutes, run:
 
-```
+.. code-block:: bash
     ./dna [date] public|steering
-```        
 
 
 `date` defaults to today's date - otherwise provide it in YYYY-MM-DD format.
 
 for example:
 
-```
+.. code-block:: bash
     ./dna 2023-12-27 steering
-```
 
 A text editor will open.
 
