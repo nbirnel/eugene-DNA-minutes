@@ -1,0 +1,44 @@
+#!/bin/sh
+
+usage() {
+    usage="Usage: $0 [date] public|steering"
+    test $# -eq 1 && printf '%s\n' "$1"
+    printf "%s\n" "$usage" 1>&2
+    exit 1
+}
+
+if [ "$#" -eq 2 ]; then
+    date="$1"
+    public_or_steering="$2"
+elif [ "$#" -eq 1 ]; then
+    date="today"
+    public_or_steering="$1"
+else 
+    usage
+fi
+
+echo "$public_or_steering" \
+| grep -e '^public$' -e '^steering$' >/dev/null \
+|| usage "invalid meeting type $public_or_steering"
+
+fmt_date="$(date -d "$date" +'%Y-%m-%d')"
+test -n "$fmt_date" || usage
+
+title="$fmt_date-dna-$public_or_steering"
+source="minutes/$title.rst"
+build="minutes/build/$title"
+
+test -e "$source" ||\
+  sed "s/__TITLE__/$title/" template.rst >"$source"
+
+vim "$source"
+pandoc -o "$build".docx "$source"
+pandoc -o "$build".pdf "$source"
+
+cat <<END
+   Send 
+     $build.docx 
+   and 
+     $build.pdf
+   to EugDNA Chair <eugdnachair@gmail.com>
+END
