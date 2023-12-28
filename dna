@@ -2,9 +2,26 @@
 
 usage() {
     usage="Usage: $0 [date] public|steering"
-    test $# -eq 1 && printf '%s\n' "$1"
+    test $# -eq 1 && printf '%s\n' "$1" 1>&2
     printf "%s\n" "$usage" 1>&2
     exit 1
+}
+
+edit() {
+    if [ -n "$EDITOR" ]; then
+        "$EDITOR" "$source"
+    elif [ -n "$VISUAL" ]; then
+        "$VISUAL" "$source"
+    elif type vim >/dev/null 2>&1; then
+        vim "$source"
+    elif type vi >/dev/null 2>&1; then
+        vi "$source"
+    elif type nano >/dev/null 2>&1; then
+        nano "$source"
+    else
+        printf "Please edit %s, then hit ENTER\n" "$source"
+        read DONE
+    fi
 }
 
 if [ "$#" -eq 2 ]; then
@@ -13,13 +30,13 @@ if [ "$#" -eq 2 ]; then
 elif [ "$#" -eq 1 ]; then
     date="today"
     public_or_steering="$1"
-else 
+else
     usage
 fi
 
-echo "$public_or_steering" \
-| grep -e '^public$' -e '^steering$' >/dev/null \
-|| usage "invalid meeting type $public_or_steering"
+echo "$public_or_steering" |
+    grep -e '^public$' -e '^steering$' >/dev/null ||
+    usage "invalid meeting type $public_or_steering"
 
 fmt_date="$(date -d "$date" +'%Y-%m-%d')"
 test -n "$fmt_date" || usage
@@ -28,10 +45,10 @@ title="$fmt_date-dna-$public_or_steering"
 source="minutes/$title.rst"
 build="minutes/build/$title"
 
-test -e "$source" ||\
-  sed "s/__TITLE__/$title/" template.rst >"$source"
+test -e "$source" ||
+    sed "s/__TITLE__/$title/" template.rst >"$source"
 
-vim "$source"
+edit "$source"
 pandoc -o "$build".docx "$source"
 pandoc -o "$build".pdf "$source"
 
