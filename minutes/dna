@@ -41,12 +41,13 @@ echo "$general_or_steering" |
 fmt_date="$(date -d "$date" +'%Y-%m-%d')"
 test -n "$fmt_date" || usage
 
-title="$fmt_date-dna-$general_or_steering"
+title="$fmt_date-DNA-$general_or_steering"
+human_title="$fmt_date DNA $general_or_steering Meeting"
 source="minutes/$title.rst"
 build="minutes/build/$title"
 
 test -e "$source" ||
-    sed "s/__TITLE__/$title/" template.rst >"$source"
+    sed "s/__TITLE__/$human_title/" template.rst >"$source"
 
 edit "$source"
 pandoc -o "$build".docx "$source"

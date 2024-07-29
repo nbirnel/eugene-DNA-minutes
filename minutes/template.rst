@@ -1,5 +1,5 @@
 __TITLE__
-=============================
+===============================
 
 {location}
 
@@ -8,14 +8,15 @@ Steering Committee Present
 
 * Leah Murray
 * Noah Birnel
+* David Burke
 * Michael Cunningham
 * Pete Knox
 * Tim Morris
-* Emily Semple
+* Randy Gudieka
 * Suzanne Taylor
 
 City Representatives Present
------------------------------
+----------------------------
 
 * Janina Rager -- Community Engagement Specialist, EPD
 
