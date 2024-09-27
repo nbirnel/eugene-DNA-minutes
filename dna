@@ -41,7 +41,7 @@ echo "$general_or_steering" |
 fmt_date="$(date -d "$date" +'%Y-%m-%d')"
 test -n "$fmt_date" || usage
 
-title="$fmt_date-DNA-$general_or_steering"
+title="DNA-minutes-$fmt_date-$general_or_steering"
 human_title="$fmt_date DNA $general_or_steering Meeting"
 source="minutes/$title.rst"
 build="minutes/build/$title"
@@ -54,9 +54,10 @@ pandoc -o "$build".docx "$source"
 pandoc -o "$build".pdf "$source"
 
 cat <<END
-   Send 
+   Place
      $build.docx 
    and 
      $build.pdf
-   to EugDNA Chair <eugdnachair@gmail.com>
+   in 
+     https://drive.google.com/drive/folders/1JjvNrcLcTTte-pRLKc2ocCXk_tvgmMGu?usp=drive_link
 END
